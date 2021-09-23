@@ -1,5 +1,3 @@
-import math
-
 import pygame as g
 import math as m
 import random as r
@@ -18,7 +16,7 @@ PI = m.pi
 
 #Game constants
 
-SIZE = (700,500)
+SIZE = (1900,1000)
 FPS = 60
 
 #####################
