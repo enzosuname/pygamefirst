@@ -14,14 +14,14 @@ DOOR = (130, 5, 23)
 #Game constants
 
 PI = m.pi
-SIZE = (1900,1000)
+SIZE = (1900,1100)
 FPS = 60
 
 #def for similar attributes
 
 def building(color,xmod=0):
     #Structure Draw
-    g.draw.rect(screen, color, [600+xmod,75,300,925])
+    g.draw.rect(screen, color, [600+xmod,75,300,925],border_top_right_radius=5,border_top_left_radius=5)
 
     #Door
     g.draw.rect(screen, DOOR, [675+xmod,900,150,100])
@@ -31,8 +31,8 @@ def building(color,xmod=0):
 
     #Windows
     for number in range(8):
-        g.draw.rect(screen, WINDOW, [650 + xmod, 125 + (100 * number), 50, 50])
-        g.draw.rect(screen, WINDOW, [800 + xmod, 125 + (100 * number), 50, 50])
+        g.draw.rect(screen, WINDOW, [650 + xmod, 125 + (100 * number), 50, 50],border_radius=3)
+        g.draw.rect(screen, WINDOW, [800 + xmod, 125 + (100 * number), 50, 50],border_radius=3)
         g.draw.line(screen, BLACKSHADE, [675.5 + xmod, 125 + (100 * number)], [675.5 + xmod, 175 + (100 * number)],
                     width=2)
         g.draw.line(screen, BLACKSHADE, [825.5 + xmod, 125 + (100 * number)], [825.5 + xmod, 175 + (100 * number)],
