@@ -10,11 +10,12 @@ WINDOW = (213, 223, 224)
 BLACKSHADE = (15, 1, 3)
 PAVEMENT = (26, 27, 28)
 DOOR = (130, 5, 23)
+SUN = (227, 209, 11)
 
 #Game constants
 
 PI = m.pi
-SIZE = (1900,1100)
+SIZE = (1900,1060)
 FPS = 60
 
 #def for similar attributes
@@ -57,12 +58,17 @@ while running:
             running = False
 
     screen.fill(SKY)
+    g.draw.circle(screen, SUN, [0, 0], 200)
 
     #call for building function to form the skyscrapers
     building(BACKGRAY)
     building(BACKGRAY, 400)
     building(FRONTGRAY,-400)
     building(FRONTGRAY, 800)
+
+    g.draw.rect(screen, PAVEMENT, [0 , 1000, 1920, 60])
+
+
 
     g.display.flip()
     clock.tick(FPS)
