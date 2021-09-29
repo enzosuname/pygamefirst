@@ -47,16 +47,18 @@ def building(color,xmod=0):
 
 g.init()
 
+#game dependents
 screen = g.display.set_mode(SIZE)
 g.display.set_caption("Jame Scene")
 clock = g.time.Clock()
-
+#game
 running = True
 while running:
     for event in g.event.get():
         if event.type == g.QUIT:
             running = False
 
+    #sky and sun
     screen.fill(SKY)
     g.draw.circle(screen, SUN, [0, 0], 200)
 
@@ -66,9 +68,8 @@ while running:
     building(FRONTGRAY,-400)
     building(FRONTGRAY, 800)
 
+    #pavement
     g.draw.rect(screen, PAVEMENT, [0 , 1000, 1920, 60])
-
-
 
     g.display.flip()
     clock.tick(FPS)
