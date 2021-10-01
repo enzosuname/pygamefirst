@@ -8,7 +8,9 @@ import random as r
 #Game constants
 
 PI = m.pi
-SIZE = (1900,1060)
+DISPLAY_WIDTH = 1900
+DISPLAY_LENGTH = 1060
+SIZE = (DISPLAY_WIDTH,DISPLAY_LENGTH)
 FPS = 60
 
 #def for similar attributes
