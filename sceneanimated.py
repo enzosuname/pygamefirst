@@ -72,12 +72,45 @@ while running:
 
     #pavement
     g.draw.rect(screen, PAVEMENT, [0 , 1000, 1920, 60])
+
+
+    #animation P.S ANIMATION IS REALLY INEFFICIENT, UNLIKE REST OF DRAWING, JUST WANTED TO MOVE ON.
+
     for event in g.event.get():
         if event.type == g.MOUSEBUTTONDOWN:
             g.draw.rect(screen, SKY, [675,900,150,100])
+            g.draw.rect(screen, FRONTGRAY, [685, 920, 25,80])
+            g.draw.rect(screen, BACKGRAY, [720, 920, 25,80])
+            g.draw.rect(screen, BACKGRAY, [755, 920, 25, 80])
+            g.draw.rect(screen, FRONTGRAY, [790, 920, 25, 80])
+            for number in range(8):
+                g.draw.rect(screen, WINDOW, [689, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [702, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [724, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [737, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [759, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [772, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [794, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+                g.draw.rect(screen, WINDOW, [807, 924 + (8 * number), (25 / 300) * 50, (25 / 300) * 50],
+                            border_radius=1)
+            g.draw.rect(screen, DOOR, [691.25, 987.5, 12.5, 8.5])
+            g.draw.rect(screen, DOOR, [726.25, 987.5, 12.5, 8.5])
+            g.draw.rect(screen, DOOR, [761.25, 987.5, 12.5, 8.5])
+            g.draw.rect(screen, DOOR, [796.25, 987.5, 12.5, 8.5])
             g.draw.rect(screen, PAVEMENT, [675, 995, 150, 5])
             g.draw.line(screen, DOOR, [675,900], [675,1000], width=4)
             g.draw.line(screen, DOOR, [825,900], [825, 1000], width=4)
+
+            #range acts as a shawty fix to keep animation going given it's a fixed image, breaks stop program however.
+            #i would imagine there's a better solution
+
             for num in range(999):
                 g.display.flip()
             #    g.draw
