@@ -2,7 +2,7 @@ import pygame as g
 import math as m
 import random as r
 
-#Create color constants
+# Create color constants
 FRONTGRAY = (102, 106, 112)
 BACKGRAY = (71, 73, 77)
 SKY = (39, 139, 232)
@@ -14,25 +14,25 @@ SUN = (227, 209, 11)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
-#Game constants
+# Game constants
 
 PI = m.pi
 SIZE = (1900,1060)
 FPS = 60
 
-#def for similar attributes
+# def for similar attributes
 
 def building(color,xmod=0):
-    #Structure Draw
+    # Structure Draw
     g.draw.rect(screen, color, [600+xmod,75,300,925],border_top_right_radius=5,border_top_left_radius=5)
 
-    #Door
+    # Door
     g.draw.rect(screen, DOOR, [675+xmod,900,150,100])
     g.draw.line(screen, BLACKSHADE,[750.5+xmod,900],[750.5+xmod,1000],width=2)
     g.draw.circle(screen,BLACKSHADE,[735+xmod,950],3)
     g.draw.circle(screen, BLACKSHADE, [765 + xmod, 950], 3)
 
-    #Windows
+    # Windows
     for number in range(8):
         g.draw.rect(screen, WINDOW, [650 + xmod, 125 + (100 * number), 50, 50],border_radius=3)
         g.draw.rect(screen, WINDOW, [800 + xmod, 125 + (100 * number), 50, 50],border_radius=3)
@@ -49,34 +49,37 @@ def building(color,xmod=0):
 
 g.init()
 
-#game dependents
+# game dependents
 screen = g.display.set_mode(SIZE)
 g.display.set_caption("Jame Scene")
 clock = g.time.Clock()
-#game
+# game
 running = True
 while running:
     for event in g.event.get():
         if event.type == g.QUIT:
             running = False
 
-    #sky and sun
+    # sky and sun
     screen.fill(SKY)
     g.draw.circle(screen, SUN, [0, 0], 200)
 
-    #call for building function to form the skyscrapers
+    # call for building function to form the skyscrapers
     building(BACKGRAY)
     building(BACKGRAY, 400)
     building(FRONTGRAY,-400)
     building(FRONTGRAY, 800)
 
-    #pavement
+    # pavement
     g.draw.rect(screen, PAVEMENT, [0 , 1000, 1920, 60])
 
-
-    #animation P.S ANIMATION IS REALLY INEFFICIENT, UNLIKE REST OF DRAWING, JUST WANTED TO MOVE ON.
+    # animation
+    # P.S ANIMATION IS REALLY INEFFICIENT, UNLIKE REST OF DRAWING, JUST WANTED TO MOVE ON.
 
     for event in g.event.get():
+
+        # animation happens when you click mouse
+
         if event.type == g.MOUSEBUTTONDOWN:
             g.draw.rect(screen, SKY, [675,900,150,100])
             g.draw.rect(screen, FRONTGRAY, [685, 920, 25,80])
@@ -108,8 +111,8 @@ while running:
             g.draw.line(screen, DOOR, [675,900], [675,1000], width=4)
             g.draw.line(screen, DOOR, [825,900], [825, 1000], width=4)
 
-            #range acts as a shawty fix to keep animation going given it's a fixed image, breaks stop program however.
-            #i would imagine there's a better solution
+            # range acts as a shawty fix to keep animation going given it's a fixed image, breaks stop program however.
+            # i would imagine there's a better solution
 
             for num in range(999):
                 g.display.flip()

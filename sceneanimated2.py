@@ -9,7 +9,8 @@ RED = (255, 0, 21)
 WHITE = (255, 255, 255)
 BULLET = (135, 89, 3)
 DESERT = (214, 163, 66)
-HAT = (38, 12, 13)
+HAT = (61, 21, 4)
+TUMBLE = (79, 64, 2)
 
 # Game constants
 
@@ -50,24 +51,29 @@ while running:
     g.draw.rect(screen, BULLET, [22.5, 0, 23, 15])
 
     # Man
-    g.draw.ellipse(screen, WHITE, [500, 500, 45, 45])
-    g.draw.ellipse(screen, BLACK, [500, 500, 45, 45], width=3)
-    g.draw.lines(screen, BLACK, False, ([522.5, 545], [522.5, 600], [500,650], [522.5, 600], [545, 650]), width=3)
-    g.draw.line(screen, BLACK, [522.5, 572.5], [495, 567], width=3)
+    g.draw.ellipse(screen, WHITE, [55, 5, 45, 45])
+    g.draw.ellipse(screen, BLACK, [55, 5, 45, 45], width=3)
+    g.draw.lines(screen, BLACK, False, ([77.5, 50], [77.5, 105], [55,155], [77.5, 105], [100, 155]), width=3)
+    g.draw.line(screen, BLACK, [77.5, 77.5], [50, 72], width=3)
 
     # GUN
-    gun = g.image.load('C:\\Users\\17536\\Desktop\\pygame images\\PngItem_4917920.png').convert_alpha()
-    # This image is currently directly mapped through my directory, presumably on github it wouldn't also work?
-
+    gun = g.image.load('PngItem_4917920.png').convert_alpha()
     gun = g.transform.scale(gun,[60,30])
-    screen.blit(gun, [445,555])
+    screen.blit(gun, [0,57.5])
 
-    g.draw.line(screen, BLACK, [522.5, 572.5], [495, 578], width=3)
+    g.draw.line(screen, BLACK, [77.5, 77.5], [50, 83], width=3)
 
     # HAT
-    g.draw.line(screen, HAT, [490, 510],[555, 510],width=5)
-    #g.draw.ellipse(screen, HAT, [])
-    g.draw.arc(screen, HAT, [522.5, 475, 22.5, 25], 0, 3.14, width = 3)
+    g.draw.line(screen, HAT, [45, 15],[110, 15],width=5)
+    g.draw.circle(screen, HAT, [70, 15], 15, draw_top_right = True, draw_top_left = True)
+    g.draw.circle(screen, HAT, [85, 15], 15, draw_top_right=True, draw_top_left=True)
+
+    # Tumbleweed
+
+    g.draw.arc(screen, TUMBLE, [300,300,150,150], 3.14, 0, width=4)
+    g.draw.arc(screen, TUMBLE, [300, 350, 150, 150], 2*3.14, 2.5, width=4)
+    g.draw.arc(screen, TUMBLE, [350, 275, 150, 150], 5, 2.5, width=4)
+    g.draw.arc(screen, TUMBLE, [300, 300, 150, 150], 3.14, 0, width=4)
 
     g.display.flip()
 
