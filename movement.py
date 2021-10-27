@@ -7,6 +7,7 @@ import random as r
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
+GRAY = (92, 94, 92)
 
 # Game constants
 
@@ -29,6 +30,9 @@ class Box():
         self.speed_x = 0
         self.speed_y = r.randint(3, 5)
 
+    def draw_ship(self):
+        g.draw.ellipse(self.display, self.color, (self.x, self.y, player_width, player_height))
+
     def draw_box(self):
         g.draw.rect(self.display, self.color, (self.x, self.y, self.width, self.height))
 
@@ -50,23 +54,13 @@ class Box():
     def is_collided(self, other):
         counter = 0
         if (self.x <= other.x <= self.x+self.width or self.x <= other.x+other.width\
-                <= self.x+self.width) and (self.y < other.y < self.y+self.width or \
-                self.y < other.y+other.width < self.y+self.width):
+                <= self.x+self.width) and (self.y < other.y < self.y+self.height or \
+                self.y < other.y+other.height < self.y+self.height):
 
             counter += 1
-            self.color = RED
 
-        # test_list = [(self.x, self.y),(self.x+self.width, self.y),(self.x, self.y+self.width),\
-        #              (self.x+self.width, self.y+self.width)]
-        # other_list = [(other.x, other.y),(other.x+other.width, other.y),(other.x, other.y+other.width),\
-        #              (other.x+other.width, other.y+other.width)]
-        #
-        # for coord in test_list
-        #     if coord >= (other.x, other.y) and coord
-        #
-        # self.x --> other.x
-        # self.y --> other.y
-        # self.width --> other.width
+            # PROOF OF CONCEPT
+            g.draw.ellipse(self.display, self.color, (self.x+100, self.y+100, player_width+100, player_width+100))
 
 #########################################################
 
@@ -78,10 +72,11 @@ g.display.set_caption("Jame Scene")
 clock = g.time.Clock()
 
 # create player
-player_width = 50
+player_width = 25
+player_height = 100
 x_loc = (DISPLAY_WIDTH-player_width)/2
 y_loc = DISPLAY_LENGTH - 2*player_width
-player = Box(screen, x_loc, y_loc, player_width, player_width, BLUE)
+player = Box(screen, x_loc, y_loc, player_width, player_width, GRAY)
 
 # create enemies
 enemy_width = 20
@@ -91,7 +86,7 @@ for i in range(10):
     random_y = r.randrange(-100, 0, 5)
     enemy_list.append(Box(screen, x_coord, random_y, enemy_width, enemy_width, RED))
 
-g.mouse.set_visible(False)
+g.mouse.set_visible(True)
 
 # game
 running = True
@@ -99,24 +94,14 @@ while running:
 
     pos = g.mouse.get_pos()
     player.x = pos[0]-.5*player_width
-    player.y = pos[1]-.5*player_width
+    player.y = pos[1]-.5*player_height
 
-    #pressed_lft = g.mouse.get_pressed()[0]
     for event in g.event.get():
         if event.type == g.QUIT:
             running = False
-        # if event.type == g.KEYDOWN:
-        #     if event.key == g.K_RIGHT:
-        #         player.speed_x = 5
-        #     if event.key == g.K_LEFT:
-        #         player.speed_x = -5
-        # if event.type == g.KEYUP:
-        #     if event.key == g.K_RIGHT:
-        #         player.speed_x = 0
-        #     if event.key == g.K_LEFT:
-        #         player.speed_x = 0
 
-    screen.fill(WHITE)
+
+    screen.fill(BLUE)
 
     for enemy in enemy_list:
         enemy.draw_box()
@@ -124,7 +109,7 @@ while running:
         if player.is_collided(enemy):
             running = False
 
-    player.draw_box()
+    player.draw_ship()
     player.update()
 
     g.display.flip()
