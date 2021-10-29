@@ -117,7 +117,7 @@ while running:
 
     player.draw_ship()
 
-    explosion = g.image.load('rename.png').convert_alpha()
+    explosion = g.image.load('trytwo.gif').convert_alpha()
     #explosion = g.transform.scale(gun, [60, 30])
     screen.blit(explosion, [0, 57.5])
 
