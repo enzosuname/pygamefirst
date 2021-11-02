@@ -18,6 +18,8 @@ DISPLAY_WIDTH = 1900
 DISPLAY_LENGTH = 1060
 SIZE = (DISPLAY_WIDTH,DISPLAY_LENGTH)
 FPS = 60
+g.font.init()
+font = g.font.SysFont('Ariel', 25, True, False)
 
 # def for similar attributes
 
@@ -31,9 +33,11 @@ class Box():
         self.color = color
         self.speed_x = 0
         self.speed_y = r.randint(3, 5)
+        self.counter = 0
 
     def draw_ship(self):
         g.draw.ellipse(self.display, self.color, (self.x, self.y, self.width, self.height))
+        g.draw.rect(self.display, GRAY, (self.x+5, self.y+20, self.width-10, self.height-40))
 
     def draw_box(self):
         g.draw.ellipse(self.display, self.color, [self.x, self.y, self.width, self.height])
@@ -57,23 +61,30 @@ class Box():
             self.x = DISPLAY_WIDTH - self.width
 
     def is_collided(self, other):
-        counter = 0
+        g.draw.rect(self.display, RED, [0, 0, 1900 - self.counter * 4, 100])
+        text = font.render(f"Wow! {self.counter}", True, BLACK)
+        screen.blit(text, [250, 250])
         if (self.x <= other.x <= self.x+self.width or self.x <= other.x+other.width\
                 <= self.x+self.width) and (self.y < other.y < self.y+self.height or \
                 self.y < other.y+other.height < self.y+self.height):
 
-            counter += 1
+            self.counter += 1
 
-            # PROOF OF CONCEPT
-            g.draw.ellipse(self.display, self.color, (self.x+100, self.y+100, player_width+100, player_width+100))
+            # Explosion animation every time ship is hit
+            explosion = g.image.load('explosion.png').convert_alpha()
+            explosion = g.transform.scale(explosion, [160, 160])
+            screen.blit(explosion, [self.x-85, self.y-40])
 
+        if self.counter == 475:
+            gameover = font.render(f"GAME OVER", True, RED)
+            screen.blit(gameover, [950, 530])
 #########################################################
 
 g.init()
 
 # game dependents
 screen = g.display.set_mode(SIZE)
-g.display.set_caption("Jame Scene")
+g.display.set_caption("Dodge the missiles!")
 clock = g.time.Clock()
 
 # create player
@@ -81,7 +92,7 @@ player_width = 25
 player_height = 100
 x_loc = (DISPLAY_WIDTH-player_width)/2
 y_loc = DISPLAY_LENGTH - 2*player_width
-player = Box(screen, x_loc, y_loc, player_width, player_height, GRAY)
+player = Box(screen, x_loc, y_loc, player_width, player_height, DRKGRAY)
 
 # create enemies
 enemy_width = 15
@@ -109,19 +120,18 @@ while running:
 
     screen.fill(BLUE)
 
+    player.draw_ship()
+
     for enemy in enemy_list:
         enemy.draw_box()
         enemy.drop_box()
         if player.is_collided(enemy):
             running = False
 
-    player.draw_ship()
-
-    explosion = g.image.load('trytwo.gif').convert_alpha()
-    #explosion = g.transform.scale(gun, [60, 30])
-    screen.blit(explosion, [0, 57.5])
-
     player.update()
+
+    yeet = 'woah'
+
 
     g.display.flip()
     clock.tick(FPS)
