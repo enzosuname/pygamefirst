@@ -61,8 +61,8 @@ class Box():
             self.x = DISPLAY_WIDTH - self.width
 
     def is_collided(self, other):
-        g.draw.rect(self.display, RED, [0, 0, 1900 - self.counter * 4, 100])
-        text = font.render(f"Wow! {self.counter}", True, BLACK)
+        g.draw.rect(self.display, RED, [0, 0, 1900 - self.counter * 10, 100])
+        text = font.render(f"Yeouch! {190 - self.counter} health remaining!", True, BLACK)
         screen.blit(text, [250, 250])
         if (self.x <= other.x <= self.x+self.width or self.x <= other.x+other.width\
                 <= self.x+self.width) and (self.y < other.y < self.y+self.height or \
@@ -75,9 +75,8 @@ class Box():
             explosion = g.transform.scale(explosion, [160, 160])
             screen.blit(explosion, [self.x-85, self.y-40])
 
-        if self.counter == 475:
-            gameover = font.render(f"GAME OVER", True, RED)
-            screen.blit(gameover, [950, 530])
+        if self.counter == 190:
+            running = False
 #########################################################
 
 g.init()
@@ -129,9 +128,6 @@ while running:
             running = False
 
     player.update()
-
-    yeet = 'woah'
-
 
     g.display.flip()
     clock.tick(FPS)
