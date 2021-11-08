@@ -56,6 +56,27 @@ class enema:
         g.draw.ellipse(screen, BULLET, [0 + self.x, 0 + self.y, 45, 15])
         g.draw.rect(screen, BULLET, [22.5 + self.x, 0 + self.y, 23, 15])
 
+class man:
+    def __init__(self, display, x, y, width, height):
+        self.display = display
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.cowboy = g.image.load('cowboy.png').convert_alpha()
+
+    def draw_good_man(self):
+        self.cowboy = g.transform.scale(self.cowboy, [70, 170])
+        self.display.blit(self.cowboy, [100 + self.x, 100 + self.y])
+
+    # def player_keys(self):
+    #     keys = g.key.get_pressed()
+    #
+    #     if keys[g.K_UP]:
+    #         self.y -= 200
+    #     elif keys[g.K_DOWN]:
+    #         self.y += 200
+
 
 #########################################################
 
@@ -67,34 +88,43 @@ g.display.set_caption("Jame Scene")
 clock = g.time.Clock()
 
 # create enemas
-bullet_list = []
-for call in range(4):
-    bullet_list.append(enema(screen, 0, 0, 0, 0))
 
 enema_list = []
 for call in range(4):
     enema_list.append(enema(screen, 950, 690 - (call * 200), 0, 0))
 
+bullet_list = []
+for call in range(4):
+    bullet_list.append(enema(screen, 500, 0 - (call * 200), 0, 0))
+
+dude = man(screen, 0, 0, 0, 0)
 
 
 
 # game
 running = True
 while running:
+
     for event in g.event.get():
         if event.type == g.QUIT:
             running = False
+        if event.type == g.KEYDOWN:
+            if event.key == g.K_DOWN:
+                if dude.y <= 599:
+                    dude.y += 200
+            elif event.key == g.K_UP:
+                if dude.y >=199:
+                    dude.y -= 200
 
-    # screen.fill(DESERT)
     desert = g.image.load('western.jpg')
     desert = g.transform.scale(desert, [1100, 850])
     screen.blit(desert, [0, 0])
 
     for enema in enema_list:
         enema.draw_man()
-
-    for bullet in bullet_list:
         enema.draw_bullet()
+
+    dude.draw_good_man()
 
     g.display.flip()
 
