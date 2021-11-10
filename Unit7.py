@@ -2,6 +2,11 @@ import pygame as g
 import math as m
 import random as r
 
+# User controls the cowboy using up and down arrow keys
+# Avoid getting hit by the bullets three times
+# When guns fire bullets, a gunshot noise should be heard
+# Also Western music should be heard in the background
+
 # Create color constants
 
 WHITE = (255, 255, 255)
@@ -18,6 +23,8 @@ DISPLAY_WIDTH = 1100
 DISPLAY_LENGTH = 850
 SIZE = (DISPLAY_WIDTH,DISPLAY_LENGTH)
 FPS = 60
+g.font.init()
+font = g.font.SysFont('Ariel', 80, True, False)
 
 # def for similar attributes
 class bullet:
@@ -35,6 +42,7 @@ class bullet:
     def shoot_bullet(self):
         if self.x < 0:
             self.x = 885
+            GUNSOUND.play()
         self.x -= self.x_velo
 
     def draw_bullet(self):
@@ -84,23 +92,40 @@ class man:
         self.width = width
         self.height = height
         self.cowboy = g.image.load('cowboy.png').convert_alpha()
-        self.counter = 0
+        self.counter = 3
+        self.heart = g.image.load('heart.png').convert_alpha()
+        self.dead = False
+        self.last = g.time.get_ticks()
+        self.cooldown = 3000
 
     def draw_good_man(self):
         self.cowboy = g.transform.scale(self.cowboy, [self.width, self.height])
         self.display.blit(self.cowboy, [100 + self.x, 100 + self.y])
 
     def is_collided(self, other):
-        #g.draw.rect(self.display, RED, [0, 0, 1900 - self.counter * 10, 100])
-        # text = font.render(f"Yeouch! {190 - self.counter} health remaining!", True, BLACK)
-        # screen.blit(text, [250, 250])
         if (self.x <= other.x <= self.x+self.width or self.x <= other.x+other.width\
                 <= self.x+self.width) and (self.y < other.y < self.y+self.height or \
                 self.y < other.y+other.height < self.y+self.height):
 
-            self.counter += 1
+            self.counter -= 1
+            other.x = 885
+            GUNSOUND.play()
 
+        # I COULDN'T GET A FOR LOOP TO WORK SO I WENT LAZY OPTION SORRY
 
+        if self.counter == 3:
+            self.display.blit(self.heart,[0,0])
+            self.display.blit(self.heart, [48, 0])
+            self.display.blit(self.heart, [96, 0])
+        elif self.counter == 2:
+            self.display.blit(self.heart, [0, 0])
+            self.display.blit(self.heart, [48, 0])
+        elif self.counter == 1:
+            self.display.blit(self.heart, [0, 0])
+        else:
+            text = font.render(f"GAME OVER", True, RED)
+            screen.blit(text, [325, 400])
+            now = g.time.get_ticks()
 
 #########################################################
 
@@ -110,6 +135,7 @@ g.init()
 screen = g.display.set_mode(SIZE)
 g.display.set_caption("Jame Scene")
 clock = g.time.Clock()
+GUNSOUND = g.mixer.Sound('revolvershot.ogg')
 
 # create enemas
 
@@ -120,10 +146,13 @@ for call in range(4):
 bullet_list = []
 for call in range(4):
     bullet_list.append(bullet(screen, 885, 745 - (call * 200)))
+    GUNSOUND.play()
 
 dude = man(screen, 0, 0)
 
-
+g.mixer.music.load('OnceUponATime.ogg')
+g.mixer.music.set_endevent(g.constants.USEREVENT)
+g.mixer.music.play()
 
 # game
 running = True
@@ -152,6 +181,9 @@ while running:
         bullet.shoot_bullet()
         if dude.is_collided(bullet):
             running = False
+
+    if dude.dead:
+        running = False
 
     dude.draw_good_man()
 
