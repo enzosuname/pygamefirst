@@ -20,6 +20,31 @@ SIZE = (DISPLAY_WIDTH,DISPLAY_LENGTH)
 FPS = 60
 
 # def for similar attributes
+class bullet:
+    def __init__(self, display, x, y, width=45.5, height=15):
+        self.display = display
+        self.x = x
+        self.y = y
+        self.x_velo = r.randint(5, 50)
+        self.width = width
+        self.height = height
+
+        # self.last = g.time.get_ticks()
+        # self.cooldown = 500
+
+    def shoot_bullet(self):
+        if self.x < 0:
+            self.x = 885
+        self.x -= self.x_velo
+
+    def draw_bullet(self):
+        g.draw.ellipse(screen, BULLET, [0 + self.x, 0 + self.y, 45, 15])
+        g.draw.rect(screen, BULLET, [22.5 + self.x, 0 + self.y, 23, 15])
+
+        # now = g.time.get_ticks()
+        # if now - self.last >= self.cooldown:
+        #     self.last = now
+        #     g.draw.ellipse(screen, BULLET, [500,500,500,500])
 
 class enema:
     def __init__(self, display, x, y, width, height):
@@ -51,31 +76,30 @@ class enema:
         g.draw.circle(screen, HAT, [70 + self.x, 15 + self.y], 15, draw_top_right=True, draw_top_left=True)
         g.draw.circle(screen, HAT, [85 + self.x, 15 + self.y], 15, draw_top_right=True, draw_top_left=True)
 
-    def draw_bullet(self):
-
-        g.draw.ellipse(screen, BULLET, [0 + self.x, 0 + self.y, 45, 15])
-        g.draw.rect(screen, BULLET, [22.5 + self.x, 0 + self.y, 23, 15])
-
 class man:
-    def __init__(self, display, x, y, width, height):
+    def __init__(self, display, x, y, width=70, height=170):
         self.display = display
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.cowboy = g.image.load('cowboy.png').convert_alpha()
+        self.counter = 0
 
     def draw_good_man(self):
-        self.cowboy = g.transform.scale(self.cowboy, [70, 170])
+        self.cowboy = g.transform.scale(self.cowboy, [self.width, self.height])
         self.display.blit(self.cowboy, [100 + self.x, 100 + self.y])
 
-    # def player_keys(self):
-    #     keys = g.key.get_pressed()
-    #
-    #     if keys[g.K_UP]:
-    #         self.y -= 200
-    #     elif keys[g.K_DOWN]:
-    #         self.y += 200
+    def is_collided(self, other):
+        #g.draw.rect(self.display, RED, [0, 0, 1900 - self.counter * 10, 100])
+        # text = font.render(f"Yeouch! {190 - self.counter} health remaining!", True, BLACK)
+        # screen.blit(text, [250, 250])
+        if (self.x <= other.x <= self.x+self.width or self.x <= other.x+other.width\
+                <= self.x+self.width) and (self.y < other.y < self.y+self.height or \
+                self.y < other.y+other.height < self.y+self.height):
+
+            self.counter += 1
+
 
 
 #########################################################
@@ -95,9 +119,9 @@ for call in range(4):
 
 bullet_list = []
 for call in range(4):
-    bullet_list.append(enema(screen, 500, 0 - (call * 200), 0, 0))
+    bullet_list.append(bullet(screen, 885, 745 - (call * 200)))
 
-dude = man(screen, 0, 0, 0, 0)
+dude = man(screen, 0, 0)
 
 
 
@@ -122,7 +146,12 @@ while running:
 
     for enema in enema_list:
         enema.draw_man()
-        enema.draw_bullet()
+
+    for bullet in bullet_list:
+        bullet.draw_bullet()
+        bullet.shoot_bullet()
+        if dude.is_collided(bullet):
+            running = False
 
     dude.draw_good_man()
 
